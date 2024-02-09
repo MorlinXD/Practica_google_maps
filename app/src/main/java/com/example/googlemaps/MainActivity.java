@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
 
@@ -42,17 +43,26 @@ implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mapa = googleMap;
         mapa.setOnMapClickListener(this);
-        CameraUpdate camUpd1 = CameraUpdateFactory.newLatLngZoom(new LatLng(-1.0126081008669103, -79.46949956799287), 16
-        );
+        CameraUpdate camUpd1 =
+                CameraUpdateFactory
+                        .newLatLngZoom(new LatLng(-1.012509212579253,
+                                -79.46950741279677), 17);
         mapa.moveCamera(camUpd1);
-        PolylineOptions lineas = new PolylineOptions().add(new LatLng(45.0, -12.0))
-                .add(new LatLng(45.0, 5.0))
-                .add(new LatLng(34.5, 5.0))
-                .add(new LatLng(34.5, -12.0))
-                .add(new LatLng(45.0, -12.0));
+
+        PolylineOptions lineas = new
+                PolylineOptions()
+                .add(new LatLng(-1.0123668827998387, -79.46721848497673))
+                .add(new LatLng(-1.0134825073655847, -79.46740087517409))
+                .add(new LatLng(-1.0131821469433566, -79.4718318840867))
+                .add(new LatLng(-1.0119163420009807, -79.47187479942727))
+                .add(new LatLng(-1.0123668827998387, -79.46721848497673));
         lineas.width(8);
         lineas.color(Color.RED);
         mapa.addPolyline(lineas);
+        double area = SphericalUtil.computeArea(puntos);
+        Toast.makeText(getApplicationContext(), "Área del polígono: " + area + " m", Toast.LENGTH_SHORT).show();
+
+
 
     }
 
@@ -116,6 +126,11 @@ implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
             lineas.width(8);
             lineas.color(Color.RED);
             mapa.addPolyline(lineas);
+
+            double area = SphericalUtil.computeArea(puntos);
+            Toast.makeText(getApplicationContext(), "Área del polígono: " + String.format("%.2f", area) + " m²", Toast.LENGTH_SHORT).show();
+
+
             contador=0;
             puntos.clear();
         }
